@@ -19,7 +19,6 @@ import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
 import com.google.api.services.actions_fulfillment.v2.model.Button;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
-import com.google.api.services.actions_fulfillment.v2.model.SimpleResponse;
 
 public class FactsAboutGoogle extends DialogflowApp {
 	// Suggestion chip constants
@@ -160,64 +159,6 @@ public class FactsAboutGoogle extends DialogflowApp {
 							.setImage(new Image().setUrl(rb.getString(imageUrl))
 									.setAccessibilityText(rb.getString(imageA11y)))
 							.setButtons(Collections.singletonList(learnMoreButton)))
-					.addSuggestions(CONFIRMATION_SUGGESTIONS);
-		}
-		return responseBuilder.build();
-	}
-
-	// Fulfill "choose_cats" and "tell_cat_fact" intent fact fulfillment function
-	@ForIntent("choose_cats")
-	public ActionResponse chooseCats(ActionRequest request) {
-		return catFact(request);
-	}
-
-	@ForIntent("tell_cat_fact")
-	public ActionResponse tellCatFact(ActionRequest request) {
-		return catFact(request);
-	}
-
-	private ActionResponse catFact(ActionRequest request) {
-		Map<String, Object> conversationData = request.getConversationData();
-
-		// Set the initial facts
-		if (conversationData.get("history") == null && conversationData.get("headquarters") == null
-				&& conversationData.get("cats") == null) {
-			conversationData.put("history", INITIAL_HISTORY_FACTS);
-			conversationData.put("headquarters", INITIAL_HEADQUARTERS_FACTS);
-			conversationData.put("cats", INITIAL_CAT_FACTS);
-		}
-		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		ResourceBundle rb = ResourceBundle.getBundle("resources");
-		List<String> facts = ((List<String>) conversationData.get("cats"));
-		if (facts.isEmpty()) {
-			responseBuilder.add(rb.getString("factTransitionFromCats")).addSuggestions(CONFIRMATION_SUGGESTIONS)
-					.removeContext("choose_fact-followup").removeContext("choose_cats-followup");
-		} else {
-			// Get random cat fact
-			Random random = new Random();
-			int factIndex = random.nextInt(facts.size());
-			String fact = facts.get(factIndex);
-			// Update user storage to remove cat fact that will be said to user
-			List<String> updatedCatFacts = new ArrayList<>(facts);
-			updatedCatFacts.remove(factIndex);
-			conversationData.put("cats", updatedCatFacts);
-
-			// Construct cat fact card
-			String imageUrl = rb.getString("cat_img_url");
-			String imageA11y = rb.getString("cat_img_a11y");
-			// Setup button for card
-			Button learnMoreButton = new Button().setTitle(rb.getString("card_link_out_text"))
-					.setOpenUrlAction(new OpenUrlAction().setUrl(rb.getString("cat_url")));
-			List<Button> buttons = new ArrayList<>();
-			buttons.add(learnMoreButton);
-
-			// build response
-			responseBuilder
-					.add(new SimpleResponse().setDisplayText(rb.getString("cat_prefix")).setTextToSpeech(
-							String.format(rb.getString("cat_ssml"), rb.getString("cat_prefix"), rb.getString(fact))))
-					.add(rb.getString("nextFact"))
-					.add(new BasicCard().setTitle(rb.getString(fact))
-							.setImage(new Image().setUrl(imageUrl).setAccessibilityText(imageA11y)).setButtons(buttons))
 					.addSuggestions(CONFIRMATION_SUGGESTIONS);
 		}
 		return responseBuilder.build();
