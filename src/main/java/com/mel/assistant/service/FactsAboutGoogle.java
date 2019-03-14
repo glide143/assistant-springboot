@@ -155,7 +155,7 @@ public class FactsAboutGoogle extends DialogflowApp {
 					.setOpenUrlAction(new OpenUrlAction().setUrl(rb.getString("card_link_out_url")));
 
 			responseBuilder.add(String.format(rb.getString(selectedCategory), rb.getString(fact)))
-					.add(rb.getString("nextFact")).add("MEL IS POGI!")
+					.add(rb.getString("nextFact") + " POGI SI MEL!")
 					.add(new BasicCard().setTitle(rb.getString(fact))
 							.setImage(new Image().setUrl(rb.getString(imageUrl))
 									.setAccessibilityText(rb.getString(imageA11y)))
