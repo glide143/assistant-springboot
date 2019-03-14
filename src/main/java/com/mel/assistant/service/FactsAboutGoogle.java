@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import org.springframework.stereotype.Service;
+
 import com.google.actions.api.ActionContext;
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
@@ -25,6 +27,7 @@ import com.google.api.services.actions_fulfillment.v2.model.Button;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 
+@Service
 public class FactsAboutGoogle extends DialogflowApp {
 
 	@ForIntent("Unrecognized Deep Link")
@@ -40,11 +43,6 @@ public class FactsAboutGoogle extends DialogflowApp {
 	// Fulfill "choose_fact" and "tell_fact" intent fact fulfillment function
 	@ForIntent("choose_fact")
 	public ActionResponse chooseFact(ActionRequest request) {
-		return fact(request);
-	}
-
-	@ForIntent("tell_fact")
-	public ActionResponse tellFact(ActionRequest request) {
 		return fact(request);
 	}
 
