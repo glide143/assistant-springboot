@@ -25,7 +25,6 @@ public class FactsAboutGoogle extends DialogflowApp {
 	private static final String[] CONFIRMATION_SUGGESTIONS = new String[] { "Sure", "No thanks" };
 	private static final HashMap<String, String[]> SINGLE_CATEGORY_SUGGESTIONS;
 	// Fact constants
-	private static final List<String> INITIAL_CAT_FACTS = Arrays.asList("cat_fact_1", "cat_fact_2", "cat_fact_3");
 	private static final List<String> INITIAL_HISTORY_FACTS = Arrays.asList("google_history_fact_1",
 			"google_history_fact_2", "google_history_fact_3", "google_history_fact_4");
 	private static final List<String> INITIAL_HEADQUARTERS_FACTS = Arrays.asList("google_headquarters_fact_1",
@@ -98,11 +97,9 @@ public class FactsAboutGoogle extends DialogflowApp {
 		Map<String, Object> conversationData = request.getConversationData();
 
 		// Set the initial facts
-		if (conversationData.get("history") == null && conversationData.get("headquarters") == null
-				&& conversationData.get("cats") == null) {
+		if (conversationData.get("history") == null && conversationData.get("headquarters") == null) {
 			conversationData.put("history", INITIAL_HISTORY_FACTS);
 			conversationData.put("headquarters", INITIAL_HEADQUARTERS_FACTS);
-			conversationData.put("cats", INITIAL_CAT_FACTS);
 		}
 
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
@@ -111,9 +108,8 @@ public class FactsAboutGoogle extends DialogflowApp {
 
 		List<String> historyFacts = (List<String>) conversationData.get("history");
 		List<String> headquartersFacts = (List<String>) conversationData.get("headquarters");
-		List<String> catFacts = (List<String>) conversationData.get("cats");
 
-		if (historyFacts.isEmpty() && headquartersFacts.isEmpty() && catFacts.isEmpty()) {
+		if (historyFacts.isEmpty() && headquartersFacts.isEmpty()) {
 			// no facts are left
 			responseBuilder.add(rb.getString("heardItAll")).endConversation();
 		} else if (facts.isEmpty()) {
@@ -122,11 +118,6 @@ public class FactsAboutGoogle extends DialogflowApp {
 			String response = String.format(rb.getString("factTransition"), selectedCategory, otherCategory);
 			List<String> suggestions = new ArrayList<>();
 			Collections.addAll(suggestions, SINGLE_CATEGORY_SUGGESTIONS.get(otherCategory));
-			// Mention and suggest cats if there are cat facts left
-			if (!catFacts.isEmpty()) {
-				response = String.format(rb.getString("factTransitionToCats"), response);
-				suggestions.add("Cats");
-			}
 
 			// Add context to redirect to other fact category
 			Map<String, String> contextParameter = new HashMap<>();
