@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.actions.api.App;
-import com.mel.assistant.domain.AssistantResponse;
 import com.mel.assistant.service.FactsAboutGoogle;
 
 @RestController
@@ -27,7 +26,6 @@ public class AssistantRestController {
 
 	@RequestMapping(value = "code", method = RequestMethod.POST)
 	public String printAnimal(@RequestBody String assistantRequest, @RequestHeader Map<String, String> headersMap) {
-		AssistantResponse assistantResponse = new AssistantResponse();
 		App app = new FactsAboutGoogle();
 		String jsonResponse = "";
 		try {
