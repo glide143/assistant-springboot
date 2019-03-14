@@ -16,15 +16,7 @@ import com.mel.assistant.service.FactsAboutGoogle;
 @RequestMapping(value = "assistant")
 public class AssistantRestController {
 
-	@RequestMapping(value = "test", method = RequestMethod.GET)
-	public String displayCode() throws Exception {
-		String project_id = System.getenv().get("GOOGLE_CLOUD_PROJECT");
-		System.out.println(project_id);
-
-		return project_id;
-	}
-
-	@RequestMapping(value = "code", method = RequestMethod.POST)
+	@RequestMapping(value = "webhook", method = RequestMethod.POST)
 	public String printAnimal(@RequestBody String assistantRequest, @RequestHeader Map<String, String> headersMap) {
 		App app = new FactsAboutGoogle();
 		String jsonResponse = "";

@@ -1,7 +1,12 @@
 package com.mel.assistant.service;
 
+import static com.mel.assistant.domain.Constants.CARDS;
+import static com.mel.assistant.domain.Constants.CONFIRMATION_SUGGESTIONS;
+import static com.mel.assistant.domain.Constants.INITIAL_HEADQUARTERS_FACTS;
+import static com.mel.assistant.domain.Constants.INITIAL_HISTORY_FACTS;
+import static com.mel.assistant.domain.Constants.SINGLE_CATEGORY_SUGGESTIONS;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,55 +26,6 @@ import com.google.api.services.actions_fulfillment.v2.model.Image;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 
 public class FactsAboutGoogle extends DialogflowApp {
-	// Suggestion chip constants
-	private static final String[] CONFIRMATION_SUGGESTIONS = new String[] { "Sure", "No thanks" };
-	private static final HashMap<String, String[]> SINGLE_CATEGORY_SUGGESTIONS;
-	// Fact constants
-	private static final List<String> INITIAL_HISTORY_FACTS = Arrays.asList("google_history_fact_1",
-			"google_history_fact_2", "google_history_fact_3", "google_history_fact_4");
-	private static final List<String> INITIAL_HEADQUARTERS_FACTS = Arrays.asList("google_headquarters_fact_1",
-			"google_headquarters_fact_2", "google_headquarters_fact_3");
-	// Card constants
-	private static final HashMap<String, String> GOOGLE_CARD;
-
-	static {
-		GOOGLE_CARD = new HashMap<>();
-		GOOGLE_CARD.put("url", "google_app_logo_url");
-		GOOGLE_CARD.put("a11y", "google_app_logo_a11y");
-	}
-
-	private static final HashMap<String, String> STAN_CARD;
-
-	static {
-		STAN_CARD = new HashMap<>();
-		STAN_CARD.put("url", "stan_url");
-		STAN_CARD.put("a11y", "stan_a11y");
-	}
-
-	private static final HashMap<String, String> GOOGLEPLEX_CARD;
-
-	static {
-		GOOGLEPLEX_CARD = new HashMap<>();
-		GOOGLEPLEX_CARD.put("url", "googleplex_url");
-		GOOGLEPLEX_CARD.put("a11y", "googleplex_a11y");
-	}
-
-	private static final HashMap<String, String> GOOGLEPLEX_BIKE_CARD;
-
-	static {
-		GOOGLEPLEX_BIKE_CARD = new HashMap<>();
-		GOOGLEPLEX_BIKE_CARD.put("url", "googleplex_biking_url");
-		GOOGLEPLEX_BIKE_CARD.put("a11y", "googleplex_biking_a11y");
-	}
-
-	private static final List<Map<String, String>> CARDS = Arrays.asList(GOOGLE_CARD, STAN_CARD, GOOGLEPLEX_CARD,
-			GOOGLEPLEX_BIKE_CARD);
-
-	static {
-		SINGLE_CATEGORY_SUGGESTIONS = new HashMap<>();
-		SINGLE_CATEGORY_SUGGESTIONS.put("headquarters", new String[] { "Headquarters" });
-		SINGLE_CATEGORY_SUGGESTIONS.put("history", new String[] { "History" });
-	}
 
 	@ForIntent("Unrecognized Deep Link")
 	public ActionResponse deepLinkWelcome(ActionRequest request) {
