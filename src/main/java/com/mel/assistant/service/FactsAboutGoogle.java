@@ -40,6 +40,11 @@ public class FactsAboutGoogle extends DialogflowApp {
 		return responseBuilder.build();
 	}
 
+	@ForIntent("tell_fact")
+	public ActionResponse tellFact(ActionRequest request) {
+		return fact(request);
+	}
+
 	// Fulfill "choose_fact" and "tell_fact" intent fact fulfillment function
 	@ForIntent("choose_fact")
 	public ActionResponse chooseFact(ActionRequest request) {
