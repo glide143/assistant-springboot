@@ -7,6 +7,7 @@ import static com.mel.assistant.domain.Constants.INITIAL_HISTORY_FACTS;
 import static com.mel.assistant.domain.Constants.SINGLE_CATEGORY_SUGGESTIONS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,21 @@ public class FactsAboutGoogle extends DialogflowApp {
 	@ForIntent("choose_fact")
 	public ActionResponse chooseFact(ActionRequest request) {
 		return fact(request);
+	}
+
+	@ForIntent("quit_facts")
+	public ActionResponse quitFact(ActionRequest resquest) {
+		ResponseBuilder responseBuilder = getResponseBuilder(resquest);
+		ResourceBundle rb = ResourceBundle.getBundle("resources");
+		List<String> quitMsg = Arrays.asList("Okay, thanks for listening!",
+				"I hope you learned something interesting! Have a great day!", "Okay! Bye!");
+
+		Random random = new Random();
+		int quitMsgIndex = random.nextInt(quitMsg.size());
+		responseBuilder.add(quitMsg.get(quitMsgIndex)).endConversation();
+
+		return responseBuilder.build();
+
 	}
 
 	private ActionResponse fact(ActionRequest request) {
@@ -109,7 +125,7 @@ public class FactsAboutGoogle extends DialogflowApp {
 							.setImage(new Image().setUrl(rb.getString(imageUrl))
 									.setAccessibilityText(rb.getString(imageA11y)))
 							.setButtons(Collections.singletonList(learnMoreButton)))
-					.addSuggestions(CONFIRMATION_SUGGESTIONS).endConversation();
+					.addSuggestions(CONFIRMATION_SUGGESTIONS);
 		}
 		return responseBuilder.build();
 	}
