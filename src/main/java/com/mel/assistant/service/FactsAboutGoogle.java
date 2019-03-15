@@ -109,7 +109,7 @@ public class FactsAboutGoogle extends DialogflowApp {
 							.setImage(new Image().setUrl(rb.getString(imageUrl))
 									.setAccessibilityText(rb.getString(imageA11y)))
 							.setButtons(Collections.singletonList(learnMoreButton)))
-					.addSuggestions(CONFIRMATION_SUGGESTIONS);
+					.addSuggestions(CONFIRMATION_SUGGESTIONS).endConversation();
 		}
 		return responseBuilder.build();
 	}
