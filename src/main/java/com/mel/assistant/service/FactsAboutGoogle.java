@@ -5,6 +5,7 @@ import static com.mel.assistant.domain.Constants.CONFIRMATION_SUGGESTIONS;
 import static com.mel.assistant.domain.Constants.INITIAL_HEADQUARTERS_FACTS;
 import static com.mel.assistant.domain.Constants.INITIAL_HISTORY_FACTS;
 import static com.mel.assistant.domain.Constants.SINGLE_CATEGORY_SUGGESTIONS;
+import static com.mel.assistant.util.MyUtils.genRanNumByListSize;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Service;
@@ -30,11 +30,11 @@ import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 
 @Service
 public class FactsAboutGoogle extends DialogflowApp {
+	private ResourceBundle rb = ResourceBundle.getBundle("resources");
 
 	@ForIntent("Unrecognized Deep Link")
 	public ActionResponse deepLinkWelcome(ActionRequest request) {
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		ResourceBundle rb = ResourceBundle.getBundle("resources");
 		responseBuilder.add(String.format(rb.getString("deep_link_fallback"), ((String) request.getParameter("any"))))
 				.addSuggestions(getCategorySuggestionsList());
 
@@ -55,12 +55,10 @@ public class FactsAboutGoogle extends DialogflowApp {
 	@ForIntent("quit_facts")
 	public ActionResponse quitFact(ActionRequest resquest) {
 		ResponseBuilder responseBuilder = getResponseBuilder(resquest);
-		ResourceBundle rb = ResourceBundle.getBundle("resources");
 		List<String> quitMsg = Arrays.asList("Okay, thanks for listening!",
 				"I hope you learned something interesting! Have a great day!", "Okay! Bye!");
 
-		Random random = new Random();
-		int quitMsgIndex = random.nextInt(quitMsg.size());
+		int quitMsgIndex = genRanNumByListSize(quitMsg.size());
 		responseBuilder.add(quitMsg.get(quitMsgIndex)).endConversation();
 
 		return responseBuilder.build();
@@ -78,7 +76,6 @@ public class FactsAboutGoogle extends DialogflowApp {
 		}
 
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		ResourceBundle rb = ResourceBundle.getBundle("resources");
 		List<String> facts = (List<String>) conversationData.get(selectedCategory);
 
 		List<String> historyFacts = (List<String>) conversationData.get("history");
@@ -103,18 +100,19 @@ public class FactsAboutGoogle extends DialogflowApp {
 			responseBuilder.add(response).addSuggestions(suggestions.toArray(new String[0])).add(context);
 		} else {
 			// There are facts remaining in the currently selected category
-			Random random = new Random();
-			int factIndex = random.nextInt(facts.size());
+			int factIndex = genRanNumByListSize(facts.size());
 			String fact = facts.get(factIndex);
+
 			// Update user storage to remove fact that will be said to user
 			List<String> updatedFacts = new ArrayList<>(facts);
 			updatedFacts.remove(factIndex);
 			conversationData.put(selectedCategory, updatedFacts);
 
 			// Get random card image and accessibility text
-			int cardIndex = random.nextInt(CARDS.size());
+			int cardIndex = genRanNumByListSize(CARDS.size());
 			String imageUrl = CARDS.get(cardIndex).get("url");
 			String imageA11y = CARDS.get(cardIndex).get("a11y");
+
 			// Setup button for card
 			Button learnMoreButton = new Button().setTitle(rb.getString("card_link_out_text"))
 					.setOpenUrlAction(new OpenUrlAction().setUrl(rb.getString("card_link_out_url")));
