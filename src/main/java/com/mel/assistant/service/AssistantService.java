@@ -27,9 +27,10 @@ import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
 import com.google.api.services.actions_fulfillment.v2.model.Button;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
 import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
+import com.mel.assistant.domain.Conversation;
 
 @Service
-public class FactsAboutGoogle extends DialogflowApp {
+public class AssistantService extends DialogflowApp {
 	private ResourceBundle rb = ResourceBundle.getBundle("resources");
 
 	@ForIntent("Unrecognized Deep Link")
@@ -66,7 +67,10 @@ public class FactsAboutGoogle extends DialogflowApp {
 	}
 
 	private ActionResponse fact(ActionRequest request) {
-		String selectedCategory = ((String) request.getParameter("category"));
+		Conversation conversation = Conversation.of(request);
+
+		String selectedCategory = conversation.getCategory();
+
 		Map<String, Object> conversationData = request.getConversationData();
 
 		// Set the initial facts
@@ -76,35 +80,41 @@ public class FactsAboutGoogle extends DialogflowApp {
 		}
 
 		ResponseBuilder responseBuilder = getResponseBuilder(request);
-		List<String> facts = (List<String>) conversationData.get(selectedCategory);
-
-		List<String> historyFacts = (List<String>) conversationData.get("history");
-		List<String> headquartersFacts = (List<String>) conversationData.get("headquarters");
+		List<String> selectedCategories = new ArrayList<>();
+		if (selectedCategory == "history") {
+			selectedCategories = conversation.getHistory();
+		} else {
+			selectedCategories = conversation.getHeadquarters();
+		}
+		List<String> historyFacts = conversation.getHistory();
+		List<String> headquartersFacts = conversation.getHeadquarters();
 
 		if (historyFacts.isEmpty() && headquartersFacts.isEmpty()) {
 			// no facts are left
 			responseBuilder.add(rb.getString("heardItAll")).endConversation();
-		} else if (facts.isEmpty()) {
+		} else if (selectedCategories.isEmpty()) {
 			// Suggest other category if no more facts in current category
 			String otherCategory = ((selectedCategory == "history") ? "history" : "headquarters");
 			String response = String.format(rb.getString("factTransition"), selectedCategory, otherCategory);
+
 			List<String> suggestions = new ArrayList<>();
 			Collections.addAll(suggestions, SINGLE_CATEGORY_SUGGESTIONS.get(otherCategory));
 
 			// Add context to redirect to other fact category
 			Map<String, String> contextParameter = new HashMap<>();
 			contextParameter.put("category", otherCategory);
+
 			ActionContext context = new ActionContext("choose_fact-followup", 5);
 			context.setParameters(contextParameter);
 
 			responseBuilder.add(response).addSuggestions(suggestions.toArray(new String[0])).add(context);
 		} else {
 			// There are facts remaining in the currently selected category
-			int factIndex = genRanNumByListSize(facts.size());
-			String fact = facts.get(factIndex);
+			int factIndex = genRanNumByListSize(selectedCategories.size());
+			String fact = selectedCategories.get(factIndex);
 
 			// Update user storage to remove fact that will be said to user
-			List<String> updatedFacts = new ArrayList<>(facts);
+			List<String> updatedFacts = new ArrayList<>(selectedCategories);
 			updatedFacts.remove(factIndex);
 			conversationData.put(selectedCategory, updatedFacts);
 

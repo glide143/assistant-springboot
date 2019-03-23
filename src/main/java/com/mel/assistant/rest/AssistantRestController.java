@@ -1,7 +1,6 @@
 package com.mel.assistant.rest;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,14 +23,10 @@ public class AssistantRestController {
 		String jsonResponse = "";
 		try {
 			jsonResponse = app.handleRequest(assistantRequest, headersMap).get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return jsonResponse;
 	}
 
