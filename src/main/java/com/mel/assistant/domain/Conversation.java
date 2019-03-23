@@ -43,7 +43,7 @@ public class Conversation {
 		return history;
 	}
 
-	public void setHistory(List<String> history) {
+	private void setHistory(List<String> history) {
 		this.history = history;
 	}
 
@@ -59,10 +59,21 @@ public class Conversation {
 		return category;
 	}
 
+	private void setHeadquarters(List<String> headquarters) {
+		this.headquarters = headquarters;
+	}
+
 	private void initDataForList() {
+		System.out.print(conversationData.get("history") == null && conversationData.get("headquarters") == null);
 		if (conversationData.get("history") == null && conversationData.get("headquarters") == null) {
 			history.addAll(INITIAL_HISTORY_FACTS);
 			headquarters.addAll(INITIAL_HEADQUARTERS_FACTS);
+		} else {
+			List<String> history = (List<String>) conversationData.get("history");
+			List<String> headquarters = (List<String>) conversationData.get("headquarters");
+			setHeadquarters(history);
+			setHistory(headquarters);
+
 		}
 
 	}

@@ -88,7 +88,6 @@ public class AssistantService extends DialogflowApp {
 		}
 		List<String> historyFacts = conversation.getHistory();
 		List<String> headquartersFacts = conversation.getHeadquarters();
-
 		if (historyFacts.isEmpty() && headquartersFacts.isEmpty()) {
 			// no facts are left
 			responseBuilder.add(rb.getString("heardItAll")).endConversation();
