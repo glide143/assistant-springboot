@@ -28,14 +28,21 @@ public class MyService extends DialogflowApp {
         List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE").setOpenUrlAction(new OpenUrlAction().setUrl("https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Whats up");
 
-        BasicCard basicCard = new BasicCard().setTitle("TThis is a title")
-                                             .setSubtitle("This is a subtitle")
-                                             .setImage(new Image().setUrl(IMG_URL)
-                                                                  .setAccessibilityText("Image alt text"))
-                                             .setButtons(buttons);
+        Image image = new Image();
+        image.setUrl(IMG_URL);
+        image.setAccessibilityText("Image alt text");
+
+
+        BasicCard basicCard = new BasicCard();
+        basicCard.setTitle("TThis is a title");
+        basicCard.setSubtitle("This is a subtitle");
+        basicCard.setImage(image);
+        basicCard.setButtons(buttons);
+
         responseBuilder.add("This is the first simple response for a basic card.")
                        .add(basicCard)
                        .addSuggestions(suggestions.toArray(new String[]{}));
+        
         return responseBuilder.build();
     }
 }
