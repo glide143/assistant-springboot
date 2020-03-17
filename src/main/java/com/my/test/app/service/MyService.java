@@ -8,6 +8,7 @@ import com.google.actions.api.response.ResponseBuilder;
 import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
 import com.google.api.services.actions_fulfillment.v2.model.Button;
 import com.google.api.services.actions_fulfillment.v2.model.Image;
+import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class MyService extends DialogflowApp {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
         responseBuilder.add("Welcome to my app");
 
-        List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE"));
+        List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE").setOpenUrlAction(new OpenUrlAction().setUrl("https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Whats up");
 
         BasicCard basicCard = new BasicCard().setTitle("TThis is a title")
