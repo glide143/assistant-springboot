@@ -1,13 +1,13 @@
-package com.mel.assistant;
+package com.my.test.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AssistantApplication {
+public class MyTestAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AssistantApplication.class, args);
+		SpringApplication.run(MyTestAppApplication.class, args);
 	}
 
 }
