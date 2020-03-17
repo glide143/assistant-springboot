@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class MyService extends DialogflowApp {
 
-    private static final String IMG_URL = "";
+    private static final String IMG_URL = "https://upload.wikimedia.org/wikipedia/en/2/2c/Google_Actions_Logo.png";
 
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
@@ -27,7 +27,7 @@ public class MyService extends DialogflowApp {
         List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE"));
         List<String> suggestions = Arrays.asList("Hey you", "Whats up");
 
-        BasicCard basicCard = new BasicCard().setTitle("Title:This is a title")
+        BasicCard basicCard = new BasicCard().setTitle("TThis is a title")
                                              .setSubtitle("This is a subtitle")
                                              .setImage(new Image().setUrl(IMG_URL)
                                                                   .setAccessibilityText("Image alt text"))
