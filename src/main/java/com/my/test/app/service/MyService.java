@@ -5,10 +5,7 @@ import com.google.actions.api.ActionResponse;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
-import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
-import com.google.api.services.actions_fulfillment.v2.model.Button;
-import com.google.api.services.actions_fulfillment.v2.model.Image;
-import com.google.api.services.actions_fulfillment.v2.model.OpenUrlAction;
+import com.google.api.services.actions_fulfillment.v2.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -42,8 +39,8 @@ public class MyService extends DialogflowApp {
                                              .setFormattedText(text)
                                              .setButtons(buttons);
 
-        responseBuilder.add(text)
-                       .add(basicCard)
+        responseBuilder.add(basicCard)
+                       .add(new SimpleResponse().setTextToSpeech(text))
                        .addSuggestions(suggestions.toArray(new String[] {}));
 
         return responseBuilder.build();
