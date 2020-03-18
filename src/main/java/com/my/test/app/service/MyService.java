@@ -25,13 +25,14 @@ public class MyService extends DialogflowApp {
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
-        responseBuilder.add("Here's a fun fact for you");
+
 
         List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE")
                                                                      .setOpenUrlAction(new OpenUrlAction().setUrl(
                                                                              "https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Hi");
         try {
+            responseBuilder.add("Here's a fun fact for you");
             FunFact funFact = funFactService.getRandomFunFact();
 
             BasicCard basicCard = createFunFactBasicCard(buttons, funFact);

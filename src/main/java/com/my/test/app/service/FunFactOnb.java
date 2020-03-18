@@ -27,7 +27,7 @@ public class FunFactOnb implements FunFactService {
             return funFact;
         }
         initFacts();
-        throw new RuntimeException("That's all the fun fact for now come back again next time");
+        throw new RuntimeException("That's all the fun fact for now. Come back again next time");
     }
 
 
