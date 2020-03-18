@@ -38,9 +38,14 @@ public class MyService extends DialogflowApp {
                                              .setImage(image)
                                              .setFormattedText(text)
                                              .setButtons(buttons);
+        MediaObject mediaObject = new MediaObject().setName("SoundHelix-Song-1")
+                                                   .setContentUrl(
+                                                           "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+                                                   .setIcon(image);
 
         responseBuilder.add(basicCard)
                        .add(new SimpleResponse().setTextToSpeech(text))
+                       .add(new MediaResponse().setMediaObjects(Collections.singletonList(mediaObject)).setMediaType("AUDIO"))
                        .addSuggestions(suggestions.toArray(new String[] {}));
 
         return responseBuilder.build();
