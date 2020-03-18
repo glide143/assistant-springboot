@@ -31,14 +31,17 @@ public class MyService extends DialogflowApp {
                                                                      .setOpenUrlAction(new OpenUrlAction().setUrl(
                                                                              "https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Hi");
+        try {
+            FunFact funFact = funFactService.getRandomFunFact();
 
-        FunFact funFact = funFactService.getRandomFunFact();
+            BasicCard basicCard = createFunFactBasicCard(buttons, funFact);
 
-        BasicCard basicCard = createFunFactBasicCard(buttons,funFact);
-
-        responseBuilder.add(basicCard)
-                       .addSuggestions(suggestions.toArray(new String[] {}));
-
+            responseBuilder.add(basicCard)
+                           .addSuggestions(suggestions.toArray(new String[] {}));
+        } catch (RuntimeException e){
+            responseBuilder.add(e.getMessage())
+                           .endConversation();
+        }
         return responseBuilder.build();
     }
 

@@ -26,7 +26,7 @@ public class FunFactOnb implements FunFactService {
             funFacts.remove(funFact);
             return funFact;
         }
-
+        initFacts();
         throw new RuntimeException("That's all the fun fact for now come back again next time");
     }
 
