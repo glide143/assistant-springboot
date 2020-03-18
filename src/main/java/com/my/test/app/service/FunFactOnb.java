@@ -21,7 +21,7 @@ public class FunFactOnb implements FunFactService {
     public FunFact getRandomFunFact() {
         if(!funFacts.isEmpty()) {
             Random rand = new Random();
-            int randomIndex = rand.nextInt(funFacts.size());
+            int randomIndex = rand.nextInt(funFacts.size() + 1);
             FunFact funFact = funFacts.get(randomIndex);
             funFacts.remove(funFact);
             return funFact;

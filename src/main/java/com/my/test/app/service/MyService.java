@@ -25,7 +25,6 @@ public class MyService extends DialogflowApp {
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
-        responseBuilder.add("Welcome to my app");
 
         List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE")
                                                                      .setOpenUrlAction(new OpenUrlAction().setUrl(
