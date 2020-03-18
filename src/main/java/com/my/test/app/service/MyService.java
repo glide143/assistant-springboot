@@ -42,10 +42,11 @@ public class MyService extends DialogflowApp {
                                                    .setContentUrl(
                                                            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
                                                    .setIcon(image);
+//
+//        .add(basicCard)
+//                .add(new SimpleResponse().setTextToSpeech(text))
 
-        responseBuilder.add(basicCard)
-                       .add(new SimpleResponse().setTextToSpeech(text))
-                       .add(new MediaResponse().setMediaObjects(Collections.singletonList(mediaObject)).setMediaType("AUDIO"))
+        responseBuilder.add(new MediaResponse().setMediaObjects(Collections.singletonList(mediaObject)).setMediaType("AUDIO"))
                        .addSuggestions(suggestions.toArray(new String[] {}));
 
         return responseBuilder.build();
