@@ -32,11 +32,11 @@ public class MyService extends DialogflowApp {
                                                                              "https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Hi");
         try {
-            responseBuilder.add("Here's a fun fact for you");
+
             FunFact funFact = funFactService.getRandomFunFact();
 
             BasicCard basicCard = createFunFactBasicCard(buttons, funFact);
-
+            responseBuilder.add("Here's a fun fact for you");
             responseBuilder.add(basicCard)
                            .addSuggestions(suggestions.toArray(new String[] {}));
         } catch (RuntimeException e){
