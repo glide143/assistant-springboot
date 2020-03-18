@@ -35,10 +35,10 @@ public class FunFactOnb implements FunFactService {
 
     private void initFacts() {
         funFacts = new ArrayList<>();
-        funFacts.add(FunFact.builder().id(1).msg(IMG_URL).urlImg("Fun Fact 1").build());
-        funFacts.add(FunFact.builder().id(2).msg(IMG_URL).urlImg("Fun Fact 2").build());
-        funFacts.add(FunFact.builder().id(3).msg(IMG_URL).urlImg("Fun Fact 3").build());
-        funFacts.add(FunFact.builder().id(4).msg(IMG_URL).urlImg("Fun Fact 4").build());
+        funFacts.add(FunFact.builder().id(1).title("Fun Fact 1").subTitle("Fun Fact 1").msg("Fun Fact 1").urlImg(IMG_URL).build());
+        funFacts.add(FunFact.builder().id(2).title("Fun Fact 2").subTitle("Fun Fact 2").msg("Fun Fact 2").urlImg(IMG_URL).build());
+        funFacts.add(FunFact.builder().id(3).title("Fun Fact 3").subTitle("Fun Fact 3").msg("Fun Fact 3").urlImg(IMG_URL).build());
+        funFacts.add(FunFact.builder().id(4).title("Fun Fact 4").subTitle("Fun Fact 4").msg("Fun Fact 4").urlImg(IMG_URL).build());
     }
 
 }

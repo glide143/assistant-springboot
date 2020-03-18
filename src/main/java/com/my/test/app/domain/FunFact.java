@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class FunFact {
     private int id;
+    private String title;
+    private String subTitle;
     private String msg;
     private String urlImg;
 }
