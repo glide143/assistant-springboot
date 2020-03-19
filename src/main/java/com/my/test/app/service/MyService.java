@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -44,6 +43,7 @@ public class MyService extends DialogflowApp {
 
         Image image = new Image();
         image.setUrl(funFact.getUrlImg());
+        image.setAccessibilityText(funFact.getSubTitle());
 
         return new BasicCard().setTitle(funFact.getTitle())
                               .setSubtitle(funFact.getSubTitle())
