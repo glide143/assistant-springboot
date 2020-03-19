@@ -1,6 +1,7 @@
 package com.my.test.app.service;
 
 import com.my.test.app.domain.FunFact;
+import com.my.test.app.exception.NoMoreFunFactsException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class FunFactOnb implements FunFactService {
             return funFact;
         }
         initFacts();
-        throw new RuntimeException("That's all the fun fact for now. Come back again next time");
+        throw new NoMoreFunFactsException("That's all the fun fact for now. Come back again next time");
     }
 
 

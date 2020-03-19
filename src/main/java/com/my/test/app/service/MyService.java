@@ -20,22 +20,16 @@ public class MyService extends DialogflowApp {
     @Autowired
     private FunFactService funFactService;
 
-    private static final String IMG_URL = "https://upload.wikimedia.org/wikipedia/en/2/2c/Google_Actions_Logo.png";
-
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
 
-
-        List<Button> buttons = Collections.singletonList(new Button().setTitle("Click HERE")
-                                                                     .setOpenUrlAction(new OpenUrlAction().setUrl(
-                                                                             "https://www.google.com/")));
         List<String> suggestions = Arrays.asList("Hey you", "Hi");
         try {
-
             FunFact funFact = funFactService.getRandomFunFact();
 
-            BasicCard basicCard = createFunFactBasicCard(buttons, funFact);
+            BasicCard basicCard = createFunFactBasicCard(funFact);
+
             responseBuilder.add("Here's a fun fact for you");
             responseBuilder.add(basicCard)
                            .addSuggestions(suggestions.toArray(new String[] {}));
@@ -46,15 +40,14 @@ public class MyService extends DialogflowApp {
         return responseBuilder.build();
     }
 
-    private BasicCard createFunFactBasicCard(List<Button> buttons, FunFact funFact) {
+    private BasicCard createFunFactBasicCard(FunFact funFact) {
+
         Image image = new Image();
         image.setUrl(funFact.getUrlImg());
-        image.setAccessibilityText("Image alt text");
 
         return new BasicCard().setTitle(funFact.getTitle())
                               .setSubtitle(funFact.getSubTitle())
                               .setImage(image)
-                              .setFormattedText(funFact.getMsg())
-                              .setButtons(buttons);
+                              .setFormattedText(funFact.getMsg());
     }
 }
