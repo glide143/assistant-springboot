@@ -10,32 +10,20 @@ import com.my.test.app.domain.FunFact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Service
 public class MyService extends DialogflowApp {
 
     @Autowired
     private FunFactService funFactService;
 
+    private String[] funFactSuggestions = {"Fun Fact"};
+
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
-
-        List<String> suggestions = Arrays.asList("Hey you", "Hi");
-        try {
-            FunFact funFact = funFactService.getRandomFunFact();
-
-            BasicCard basicCard = createFunFactBasicCard(funFact);
-
-            responseBuilder.add("Here's a fun fact for you");
-            responseBuilder.add(basicCard)
-                           .addSuggestions(suggestions.toArray(new String[] {}));
-        } catch (RuntimeException e){
-            responseBuilder.add(e.getMessage())
-                           .endConversation();
-        }
+        responseBuilder.add("Hi welcome to my app");
+        responseBuilder.add("What would you like to hear ?");
+        responseBuilder.addSuggestions(funFactSuggestions);
         return responseBuilder.build();
     }
 
@@ -50,4 +38,25 @@ public class MyService extends DialogflowApp {
                               .setImage(image)
                               .setFormattedText(funFact.getMsg());
     }
+
+    @ForIntent("fun_fact")
+    public ActionResponse funFact(ActionRequest request) {
+        ResponseBuilder responseBuilder = getResponseBuilder(request);
+
+        try {
+            FunFact funFact = funFactService.getRandomFunFact();
+
+            BasicCard basicCard = createFunFactBasicCard(funFact);
+
+            responseBuilder.add("Here's a fun fact for you");
+            responseBuilder.add(basicCard)
+                           .add("Do you want to hear more fact")
+                           .addSuggestions(funFactSuggestions);
+        } catch (RuntimeException e){
+            responseBuilder.add(e.getMessage())
+                           .endConversation();
+        }
+        return responseBuilder.build();
+    }
+
 }
