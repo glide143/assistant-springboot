@@ -31,9 +31,9 @@ public class CustomizeFallBack implements FallBackService {
 
     @Override
     public String getEndConversationFallBack() {
-        List<String> endConvoFallBack = Arrays.asList("Thank you for using my app please do rate us thank you. :) ",
-                                                     "I hope you have fun :) , please do rate us.",
-                                                     "Please come again next time for more fun facts. Have a nice day!");
+        List<String> endConvoFallBack = Arrays.asList("Thank you for using my app please do rate us thank you. \uD83D\uDE0A ",
+                                                     "I hope you have fun \uD83D\uDE0A , please do rate us.",
+                                                     "Please come again next time for more fun facts. Have a nice day! \uD83D\uDE0A");
         int randomIndex = getRandomIndex(endConvoFallBack);
 
         return endConvoFallBack.get(randomIndex);
