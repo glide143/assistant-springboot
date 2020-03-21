@@ -25,7 +25,7 @@ public class MyService extends DialogflowApp {
     @Autowired
     private BasicCardService basicCardService;
 
-    private String[] funFactSuggestions = { "Yes, Tell me some fun fact" };
+    private String[] funFactSuggestions = { "Yes, Tell more fun facts" };
 
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
