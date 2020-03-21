@@ -43,7 +43,7 @@ public class MyService extends DialogflowApp {
         try {
             FunFact funFact = funFactService.getRandomFunFact();
 
-            BasicCard basicCard = basicCardService.createBasicCardFunFact(funFact);
+            BasicCard basicCard = basicCardService.createBasicCardFunFact(null);
 
             responseBuilder.add("Here's a fun fact for you");
             responseBuilder.add(basicCard)
