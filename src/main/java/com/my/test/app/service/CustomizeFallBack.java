@@ -29,6 +29,16 @@ public class CustomizeFallBack implements FallBackService {
         return "I'm sorry, I'm having trouble here. Maybe we should try this again later.";
     }
 
+    @Override
+    public String getEndConversationFallBack() {
+        List<String> endConvoFallBack = Arrays.asList("Thank you for using my app please do rate us thank you. :) ",
+                                                     "I hope you have fun :) , please do rate us.",
+                                                     "Please come again next time for more fun facts. Have a nice day!");
+        int randomIndex = getRandomIndex(endConvoFallBack);
+
+        return endConvoFallBack.get(randomIndex);
+    }
+
     private int getRandomIndex(List<String> fallbackList) {
         return new Random().nextInt(fallbackList.size());
     }

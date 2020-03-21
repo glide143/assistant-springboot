@@ -25,7 +25,7 @@ public class MyService extends DialogflowApp {
     @Autowired
     private BasicCardService basicCardService;
 
-    private String[] funFactSuggestions = { "Yes, Tell more fun facts" };
+    private String[] funFactSuggestions = { "Yes, Tell more fun facts","No, Thanks" };
 
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
@@ -71,6 +71,15 @@ public class MyService extends DialogflowApp {
 
         responseBuilder.add(defaultMsg)
                        .addSuggestions(new String[] { "Tell me a fact" });
+        return responseBuilder.build();
+    }
+
+    @ForIntent("End Conversation")
+    public ActionResponse endConversation(ActionRequest request) {
+        ResponseBuilder responseBuilder = getResponseBuilder(request);
+        String endConvoMsg = fallBackService.getEndConversationFallBack();
+        responseBuilder.add(endConvoMsg)
+                       .endConversation();
         return responseBuilder.build();
     }
 

@@ -4,4 +4,6 @@ public interface FallBackService {
     String getGeneralFallBack();
 
     String getFinalFallBack();
+
+    String getEndConversationFallBack();
 }
