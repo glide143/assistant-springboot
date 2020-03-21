@@ -26,7 +26,7 @@ public class CustomizeFallBack implements FallBackService {
 
     @Override
     public String getFinalFallBack() {
-        return "I'm sorry I'm having trouble here. Maybe we should try this again later.";
+        return "I'm sorry, I'm having trouble here. Maybe we should try this again later.";
     }
 
     private int getRandomIndex(List<String> fallbackList) {
