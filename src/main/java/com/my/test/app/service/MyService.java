@@ -32,7 +32,7 @@ public class MyService extends DialogflowApp {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
         responseBuilder.add("Hi welcome to my app");
         responseBuilder.add("What would you like to hear ?");
-        responseBuilder.addSuggestions(funFactSuggestions);
+        responseBuilder.addSuggestions(new String[]{"Tell me some fun fact"});
         return responseBuilder.build();
     }
 
