@@ -5,18 +5,27 @@ import com.google.actions.api.ActionResponse;
 import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
-import com.google.api.services.actions_fulfillment.v2.model.*;
+import com.google.api.services.actions_fulfillment.v2.model.BasicCard;
 import com.my.test.app.domain.FunFact;
+import com.my.test.app.exception.NoMoreFunFactsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MyService extends DialogflowApp {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyService.class);
     @Autowired
     private FunFactService funFactService;
 
-    private String[] funFactSuggestions = {"Fun Fact"};
+    @Autowired
+    private FallBackService fallBackService;
+
+    @Autowired
+    private BasicCardService basicCardService;
+
+    private String[] funFactSuggestions = { "Fun Fact" };
 
     @ForIntent("Default Welcome Intent")
     public ActionResponse welcome(ActionRequest request) {
@@ -27,18 +36,6 @@ public class MyService extends DialogflowApp {
         return responseBuilder.build();
     }
 
-    private BasicCard createFunFactBasicCard(FunFact funFact) {
-
-        Image image = new Image();
-        image.setUrl(funFact.getUrlImg());
-        image.setAccessibilityText(funFact.getSubTitle());
-
-        return new BasicCard().setTitle(funFact.getTitle())
-                              .setSubtitle(funFact.getSubTitle())
-                              .setImage(image)
-                              .setFormattedText(funFact.getMsg());
-    }
-
     @ForIntent("fun_fact")
     public ActionResponse funFact(ActionRequest request) {
         ResponseBuilder responseBuilder = getResponseBuilder(request);
@@ -46,16 +43,34 @@ public class MyService extends DialogflowApp {
         try {
             FunFact funFact = funFactService.getRandomFunFact();
 
-            BasicCard basicCard = createFunFactBasicCard(funFact);
+            BasicCard basicCard = basicCardService.createBasicCardFunFact(funFact);
 
             responseBuilder.add("Here's a fun fact for you");
             responseBuilder.add(basicCard)
                            .add("Do you want to hear more fact")
                            .addSuggestions(funFactSuggestions);
-        } catch (RuntimeException e){
+        } catch (NoMoreFunFactsException e) {
             responseBuilder.add(e.getMessage())
                            .endConversation();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+
+            String finalCallBackMsg = fallBackService.getFinalFallBack();
+
+            responseBuilder.add(finalCallBackMsg)
+                           .endConversation();
         }
+        return responseBuilder.build();
+    }
+
+    @ForIntent("Default Fallback Intent")
+    public ActionResponse defaultFallBackIntent(ActionRequest request) {
+        ResponseBuilder responseBuilder = getResponseBuilder(request);
+
+        String defaultMsg = fallBackService.getGeneralFallBack();
+
+        responseBuilder.add(defaultMsg)
+                       .addSuggestions(new String[] { "Tell me a fact" });
         return responseBuilder.build();
     }
 
